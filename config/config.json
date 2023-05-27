@@ -1,6 +1,6 @@
 {
   "db_config": {
     "db_dialect": "sqlite",
-    "db_path": "cpu_load.db"
+    "db_path": "/db/cpu_load.db"
   }
 }

@@ -19,14 +19,12 @@ def fill_space(data_list: list[dict]) -> list[dict]:
         last_date = data_list[0]["time"]
 
     if len(data_list) < 720:
-        for index, point in enumerate(data_list):
+        for index, data in enumerate(data_list):
             if index == (len(data_list)-1):
                 break
-            cur_time = point["time"]
-            next_time = data_list[(index+1)]["time"]
-            delta = abs(point["time"] - data_list[(index+1)]["time"])
+            delta = abs(data["time"] - data_list[(index+1)]["time"])
             if delta.seconds > interval:
-                data_list.insert(index + 1, {"time": point["time"] + datetime.timedelta(seconds=interval), "value": None})
+                data_list.insert(index + 1, {"time": data["time"] + datetime.timedelta(seconds=interval), "value": None})
 
     index = 0
     while last_date + datetime.timedelta(seconds=7) < data_list[index]["time"]:

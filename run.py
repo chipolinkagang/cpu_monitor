@@ -29,7 +29,6 @@ def chart_data():
         cpu_monitor = CPULoads()
         data_list = cpu_monitor.get_last_hour_loads(engine)
         data_list = fill_space(data_list, 720, 5)
-        avg_data = get_average_values(data_list, 720, 12)
 
         json_data = json.dumps(data_list)
 

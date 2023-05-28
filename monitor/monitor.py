@@ -15,17 +15,14 @@ class CPUMonitor:
         self.logger = setup_logger()
 
     def record_load(self):
-        temp_load = cpu_percent()
-        print(temp_load, datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S'))
-        self.logger.info(f"{temp_load}%")
-        CPULoads(load=temp_load, load_date=datetime.datetime.now()).add_load(self.engine)
-
-    def start_load(self):
         while True:
-            self.record_load()
+            temp_load = cpu_percent()
+            print(temp_load, datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S'))
+            self.logger.info(f"{temp_load}%")
+            CPULoads(load=temp_load, load_date=datetime.datetime.now()).add_load(self.engine)
             time.sleep(5)
 
     def start_record(self):
         self.logger.debug("Start recording.")
-        monitor_thread = threading.Thread(target=self.start_load, daemon=True)
+        monitor_thread = threading.Thread(target=self.record_load, daemon=True)
         monitor_thread.start()

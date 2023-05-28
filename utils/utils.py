@@ -1,10 +1,15 @@
 import datetime
 
 
-def fill_space(data_list: list[dict], all_data: int, interval: int) -> list[dict]:
+def fill_space(data_list: list[dict]) -> list[dict]:
+    """
+    :param data_list: points list,
+    :return: full points list (720 pcs).
+    """
     if len(data_list) == 0:
         return []
 
+    interval = 5  # Interval of CPU calculating is 5 seconds
     end_date = datetime.datetime.now()
     start_date = datetime.timedelta(hours=1)
     last_date = end_date - start_date
@@ -13,7 +18,7 @@ def fill_space(data_list: list[dict], all_data: int, interval: int) -> list[dict
             last_date - datetime.timedelta(seconds=3) < data_list[0]["time"]):
         last_date = data_list[0]["time"]
 
-    if len(data_list) < all_data:
+    if len(data_list) < 720:
         for index, point in enumerate(data_list):
             if index == (len(data_list)-1):
                 break
@@ -33,8 +38,14 @@ def fill_space(data_list: list[dict], all_data: int, interval: int) -> list[dict
     return data_list
 
 
-def get_average_values(data_list: list[dict], all_data: int, amount: int) -> list[dict]:
+def get_average_values(data_list: list[dict]) -> list[dict]:
+    """
+    :param data_list: data_list: points list,
+    :return: avg points list (1 CPU calculating to 1 min)
+    """
     new_data = []
+    all_data = 60*60/5
+    amount = 60  # AVG 1 CPU calculating to 1 min
     for i in range(int(all_data/amount)):
         count = 0
         value = 0

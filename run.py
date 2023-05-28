@@ -25,17 +25,17 @@ def index():
 
 @app.route('/chart-data')
 def chart_data():
-    def generate_random_data():
+    def get_data():
         cpu_monitor = CPULoads()
         data_list = cpu_monitor.get_last_hour_loads(engine)
-        data_list = fill_space(data_list, 720, 5)
+        data_list = fill_space(data_list)
 
         json_data = json.dumps(data_list)
 
         yield f"data:{json_data}\n\n"
         time.sleep(5)
 
-    response = Response(stream_with_context(generate_random_data()), mimetype="text/event-stream")
+    response = Response(stream_with_context(get_data()), mimetype="text/event-stream")
     response.headers["Cache-Control"] = "no-cache"
     response.headers["X-Accel-Buffering"] = "no"
     return response
@@ -43,18 +43,18 @@ def chart_data():
 
 @app.route('/avg-chart-data')
 def avg_chart_data():
-    def generate_random_data():
+    def get_data():
         cpu_monitor = CPULoads()
         data_list = cpu_monitor.get_last_hour_loads(engine)
-        data_list = fill_space(data_list, 720, 5)
-        avg_data = get_average_values(data_list, 720, 12)
+        data_list = fill_space(data_list)
+        avg_data = get_average_values(data_list)
 
         json_avg_data = json.dumps(avg_data)
 
         yield f"data:{json_avg_data}\n\n"
         time.sleep(5)
 
-    response = Response(stream_with_context(generate_random_data()), mimetype="text/event-stream")
+    response = Response(stream_with_context(get_data()), mimetype="text/event-stream")
     response.headers["Cache-Control"] = "no-cache"
     response.headers["X-Accel-Buffering"] = "no"
     return response

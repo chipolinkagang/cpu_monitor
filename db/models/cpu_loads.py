@@ -20,9 +20,8 @@ class CPULoads(Base):
     def add_load(self, engine) -> bool:
         with Session(engine) as session:
             try:
-                session.add(CPULoads(name=self.id,
-                                     extension=self.load,
-                                     size=self.load_date
+                session.add(CPULoads(load=self.load,
+                                     load_date=self.load_date
                                      ))
                 session.commit()
                 return True
@@ -34,8 +33,8 @@ class CPULoads(Base):
         time -= dtime
         points = []
 
-        stmt = select(CPULoads).filter(CPULoads.load_date >= time)
+        stmt = select(CPULoads).filter(CPULoads.load_date >= time).order_by(CPULoads.load_date)
         with Session(engine) as session:
             for row in session.scalars(stmt):
-                points.append({"x": row.load_date, "y": row.load})
+                points.append({"time": row.load_date, "value": row.load})
         return points

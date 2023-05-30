@@ -66,8 +66,9 @@ if __name__ == "__main__":
     logger.debug("Starting get_config().")
     config = get_config()
     if "Error" in config:
-        logger.debug("The configuration has been loaded successfully.")
+        logger.debug("The configuration was not loaded.")
         sys.exit()
+    logger.debug("The configuration has been loaded successfully.")
 
     engine = create_engine(f'{config["db_config"]["db_dialect"]}://{config["db_config"]["db_path"]}')
     create_db(engine)
